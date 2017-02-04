@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { ActivatedRoute, Params } from '@angular/router';
+
 
 @Component({
   selector: 'app-voting',
@@ -8,11 +10,17 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 })
 export class VotingComponent implements OnInit {
   items: FirebaseListObservable<any[]>;
-  constructor(af: AngularFire) {
-    this.items = af.database.list('/songLists/juqe/songPool');
+  
+  constructor(private af: AngularFire,private route: ActivatedRoute) {
+    
+  
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params =>{
+      this.items = this.af.database.list('/songLists/'+ params['code']+'/songPool');
+    })
   }
+
 
 }
